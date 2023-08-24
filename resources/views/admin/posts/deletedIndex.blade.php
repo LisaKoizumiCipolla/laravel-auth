@@ -22,13 +22,11 @@
                             <td class="fw-bold">{{ $post->title }}</td>
                             <td>{{ $post->slug }}</td>
                             <td>
-                                <a href="{{ route('admin.posts.show', $post) }}" class="btn btn-sm btn-primary">View</a>
-                                <a href="{{ route('admin.posts.edit', $post) }}" class="btn btn-sm btn-success">Edit</a>
-                                <form class="d-inline-block" action="{{ route('admin.posts.destroy', $post) }}" method="POST">
+                                <form class="d-inline-block" action="{{ route('admin.posts.restore', $post) }}" method="POST">
                                     
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-warning">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-warning">Restore</button>
                                 
                                 </form>
                             </td>
