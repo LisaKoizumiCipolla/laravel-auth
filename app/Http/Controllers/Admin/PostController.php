@@ -7,6 +7,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -36,12 +37,15 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+
         $data = $request->validate([
             'title' => ['required', 'unique:posts', 'min:10', 'max:255'],
-            'image' => ['url:https'],
+            'image' => ['file'],
             'content' => ['required', 'min:10'],
         ]);
+        $img_path = Storage::put('uploads', $request['image']);
 
+        $data['image'] = $img_path;
         $data["slug"] = Str::of($data['title'])->slug('-');
 
         $newPost = Post::create($data);
@@ -100,7 +104,7 @@ class PostController extends Controller
     public function deletedIndex(){
         $posts = Post::onlyTrashed()->paginate(10);
 
-        return view('admin.posts.deletedIndex', compact('posts'));
+        return view('admin.posts.deleted', compact('posts'));
     }
 
     public function restore($id){
